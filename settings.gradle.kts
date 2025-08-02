@@ -21,4 +21,8 @@ dependencyResolutionManagement {
 
 rootProject.name = "MercadoBitcoinApp"
 include(":app")
- 
+include(":core")
+include(":exchanges")
+include(":exchanges:exchanges_presentation")
+include(":exchanges:exchanges_domain")
+include(":exchanges:exchanges_data")

@@ -4,14 +4,14 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Text
-import androidx.compose.runtime.Composable
-import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
+import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.composable
+import androidx.navigation.compose.rememberNavController
+import androidx.navigation.toRoute
 import com.mercado.bitcoin.app.ui.theme.MercadoBitcoinAppTheme
+import com.mercado.bitcoin.exchanges_presentation.exchangeList.ExchangeListScreen
+import com.mercado.bitcoin.exchanges_presentation.exchangesDetails.ExchangeDetailsScreen
+import kotlinx.serialization.Serializable
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -19,29 +19,34 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
         setContent {
             MercadoBitcoinAppTheme {
-                Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
-                    Greeting(
-                        name = "Android",
-                        modifier = Modifier.padding(innerPadding)
-                    )
+                val navController = rememberNavController()
+
+                NavHost(
+                    navController = navController,
+                    startDestination = ExchangeListScreenDestination
+                ) {
+                    composable<ExchangeListScreenDestination> {
+                        ExchangeListScreen(
+                            navigateToDetailsScreen = {
+                                navController.navigate(DetailsScreenDestination(exchangeId = it))
+                            }
+                        )
+                    }
+                    composable<DetailsScreenDestination> {
+                        val args = it.toRoute<DetailsScreenDestination>()
+
+                        ExchangeDetailsScreen(
+                            exchangeId = args.exchangeId
+                        )
+                    }
                 }
             }
         }
     }
 }
 
-@Composable
-fun Greeting(name: String, modifier: Modifier = Modifier) {
-    Text(
-        text = "Hello $name!",
-        modifier = modifier
-    )
-}
+@Serializable
+object ExchangeListScreenDestination
 
-@Preview(showBackground = true)
-@Composable
-fun GreetingPreview() {
-    MercadoBitcoinAppTheme {
-        Greeting("Android")
-    }
-}
+@Serializable
+data class DetailsScreenDestination(val exchangeId: String)
