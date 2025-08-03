@@ -17,10 +17,10 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import praonde.com.mercadobitcointeste.R
-import praonde.com.mercadobitcointeste.common.extensions.toDollarCurrency
+import com.mercado.bitcoin.core.extensions.toDollarCurrency
+import com.mercado.bitcoin.core_ui.theme.AppTheme
 import com.mercado.bitcoin.exchanges_domain.model.ExchangeData
-import praonde.com.mercadobitcointeste.ui.theme.AppTheme
+import com.mercado.bitcoin.exchanges_presentation.R
 
 @Composable
 fun ExchangeCard(data: ExchangeData, onCardClick: () -> Unit) {

@@ -73,7 +73,12 @@ dependencies {
     testImplementation(libs.mockk)
     implementation(libs.turbine)
 
+    implementation(libs.koin.startup)
 
+
+    implementation(project(":core_ui"))
+    implementation(project(":exchanges:exchanges_data"))
+    implementation(project(":exchanges:exchanges_domain"))
     implementation(project(":exchanges:exchanges_presentation"))
 
 }

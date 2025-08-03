@@ -8,7 +8,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.toRoute
-import com.mercado.bitcoin.app.ui.theme.MercadoBitcoinAppTheme
+import com.mercado.bitcoin.core_ui.theme.AppTheme
 import com.mercado.bitcoin.exchanges_presentation.exchangeList.ui.ExchangeListScreen
 import com.mercado.bitcoin.exchanges_presentation.exchangesDetails.ui.ExchangeDetailsScreen
 import kotlinx.serialization.Serializable
@@ -18,7 +18,7 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContent {
-            MercadoBitcoinAppTheme {
+            AppTheme {
                 val navController = rememberNavController()
 
                 NavHost(

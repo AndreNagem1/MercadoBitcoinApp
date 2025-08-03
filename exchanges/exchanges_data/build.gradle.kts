@@ -40,4 +40,15 @@ dependencies {
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
+
+    implementation(libs.retrofit.lib)
+    implementation(libs.retrofit.gson)
+    implementation(libs.retrofit.interceptor)
+
+    implementation(libs.koin.android)
+    implementation(libs.koin.compose)
+
+    implementation(project(":core"))
+    implementation(project(":exchanges:exchanges_domain"))
+
 }
