@@ -1,9 +1,9 @@
-package praonde.com.mercadobitcointeste.exchangeList.domain.repository
+package com.mercado.bitcoin.exchanges_domain.repository
 
+import com.mercado.bitcoin.core.network.LoadingEvent
 import kotlinx.coroutines.flow.Flow
-import praonde.com.mercadobitcointeste.common.network.LoadingEvent
-import praonde.com.mercadobitcointeste.exchangeList.domain.model.ExchangeData
-import praonde.com.mercadobitcointeste.exchangeList.domain.model.ExchangeDetails
+import com.mercado.bitcoin.exchanges_domain.model.ExchangeData
+import com.mercado.bitcoin.exchanges_domain.model.ExchangeDetails
 
 
 interface ExchangeRepository {

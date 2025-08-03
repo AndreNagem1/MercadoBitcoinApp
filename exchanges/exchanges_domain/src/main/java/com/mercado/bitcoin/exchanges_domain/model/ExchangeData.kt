@@ -1,4 +1,4 @@
-package praonde.com.mercadobitcointeste.exchangeList.domain.model
+package com.mercado.bitcoin.exchanges_domain.model
 
 data class ExchangeData(
     val id: String,

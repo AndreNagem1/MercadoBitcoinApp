@@ -11,13 +11,11 @@ import androidx.compose.ui.res.stringResource
 import com.mercado.bitcoin.core.extensions.toDollarCurrency
 import com.mercado.bitcoin.core_ui.composables.BaseScreen
 import com.mercado.bitcoin.exchanges_presentation.R
-import org.koin.androidx.compose.koinViewModel
-import praonde.com.mercadobitcointeste.common.network.LoadingEvent
-import praonde.com.mercadobitcointeste.common.network.getSuccessDataOrNull
-import praonde.com.mercadobitcointeste.common.network.isError
-import praonde.com.mercadobitcointeste.common.network.isLoading
-import praonde.com.mercadobitcointeste.exchangeList.domain.model.ExchangeDetails
-import praonde.com.mercadobitcointeste.exchangeList.presentation.exchangeDetails.viewmodel.ExchangeDetailsScreenViewModel
+import com.mercado.bitcoin.core.network.LoadingEvent
+import com.mercado.bitcoin.core.network.getSuccessDataOrNull
+import com.mercado.bitcoin.core.network.isError
+import com.mercado.bitcoin.core.network.isLoading
+import com.mercado.bitcoin.exchanges_domain.model.ExchangeDetails
 
 @Composable
 fun ExchangeDetailsScreenContent(

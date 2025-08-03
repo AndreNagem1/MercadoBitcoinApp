@@ -9,7 +9,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.toRoute
 import com.mercado.bitcoin.app.ui.theme.MercadoBitcoinAppTheme
-import com.mercado.bitcoin.exchanges_presentation.exchangeList.ExchangeListScreen
+import com.mercado.bitcoin.exchanges_presentation.exchangeList.ui.ExchangeListScreen
 import com.mercado.bitcoin.exchanges_presentation.exchangesDetails.ui.ExchangeDetailsScreen
 import kotlinx.serialization.Serializable
 

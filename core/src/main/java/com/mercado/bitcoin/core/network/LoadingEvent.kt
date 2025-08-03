@@ -1,4 +1,4 @@
-package praonde.com.mercadobitcointeste.common.network
+package com.mercado.bitcoin.core.network
 
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
