@@ -1,5 +1,6 @@
 package com.mercado.bitcoin.exchanges_data.retrofit
 
+import com.mercado.bitcoin.exchanges_data.BuildConfig
 import okhttp3.Interceptor
 import okhttp3.OkHttpClient
 import okhttp3.Response
@@ -8,7 +9,7 @@ import retrofit2.converter.gson.GsonConverterFactory
 
 fun provideRetrofit(): Retrofit {
     val okHttpClient = OkHttpClient.Builder()
-        .addInterceptor(AuthInterceptor(apiKey = "9fd0687e-0615-4fa8-be2b-0b16b04fa236"))
+        .addInterceptor(AuthInterceptor(apiKey = BuildConfig.COIN_API_KEY))
         .build()
 
     return Retrofit.Builder()
