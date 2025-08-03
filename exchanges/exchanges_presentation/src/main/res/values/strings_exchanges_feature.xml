@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Mercado bitcoin teste</string>
+
+    <!-- Exchange List -->
+    <string name="exchange_list_screen_title">Exchange List</string>
+
+    <!-- Exchange Details -->
+    <string name="exchange_details_screen_title">Exchange Details</string>
+    <string name="exchange_no_name">Sem nome</string>
+    <string name="exchange_id_label">Exchange ID:</string>
+    <string name="exchange_name_label">Name:</string>
+    <string name="exchange_volume_label">Volume per day:</string>
+</resources>

@@ -5,7 +5,7 @@ plugins {
 }
 
 android {
-    namespace = "com.mercado.bitcoin.exchanges_presentation"
+    namespace = "com.mercado.bitcoin.core_ui"
     compileSdk = 36
 
     defaultConfig {
@@ -39,10 +39,7 @@ dependencies {
     implementation(libs.androidx.appcompat)
     implementation(libs.material)
     testImplementation(libs.junit)
-    androidTestImplementation(libs.androidx.junit)
-    androidTestImplementation(libs.androidx.espresso.core)
 
-    implementation(libs.androidx.lifecycle.runtime.ktx)
     implementation(libs.androidx.activity.compose)
     implementation(platform(libs.androidx.compose.bom))
     implementation(libs.androidx.ui)
@@ -50,27 +47,11 @@ dependencies {
     implementation(libs.androidx.ui.tooling.preview)
     implementation(libs.androidx.material3)
     testImplementation(libs.junit)
+
     androidTestImplementation(platform(libs.androidx.compose.bom))
-    androidTestImplementation(libs.androidx.ui.test.junit4)
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
 
-    implementation(libs.navigation.compose)
-    implementation(libs.kotlinx.serialization.json)
-    implementation(libs.gson)
-
-    implementation(libs.retrofit.lib)
-    implementation(libs.retrofit.gson)
-    implementation(libs.retrofit.interceptor)
-
     implementation(libs.koin.android)
     implementation(libs.koin.compose)
-
-    implementation(libs.kotlin.test.corroutines)
-    testImplementation(libs.mockk)
-    implementation(libs.turbine)
-
-    implementation(project(":exchanges:exchanges_domain"))
-    implementation(project(":core_ui"))
-    implementation(project(":core"))
 }
