@@ -1,6 +1,6 @@
-package com.mercado.bitcoin.exchanges_data.retrofit
+package com.mercado.bitcoin.core.retrofit
 
-import com.mercado.bitcoin.exchanges_data.BuildConfig
+import com.mercado.bitcoin.core.BuildConfig
 import okhttp3.Interceptor
 import okhttp3.OkHttpClient
 import okhttp3.Response

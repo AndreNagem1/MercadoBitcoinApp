@@ -1,7 +1,16 @@
+import java.util.Properties
+
 plugins {
     alias(libs.plugins.android.library)
     alias(libs.plugins.kotlin.android)
 }
+
+val coinApiKey: String = project
+    .rootProject
+    .file("local.properties")
+    .inputStream()
+    .use { Properties().apply { load(it) } }
+    .getProperty("COIN_API_KEY") ?: ""
 
 android {
     namespace = "com.mercado.bitcoin.core"
@@ -12,6 +21,8 @@ android {
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles("consumer-rules.pro")
+        android.buildFeatures.buildConfig = true
+        buildConfigField("String", "COIN_API_KEY", "\"$coinApiKey\"")
     }
 
     buildTypes {
@@ -41,4 +52,7 @@ dependencies {
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
     implementation(libs.retrofit.lib)
+    implementation(libs.retrofit.gson)
+    implementation(libs.koin.android)
+    implementation(libs.koin.compose)
 }

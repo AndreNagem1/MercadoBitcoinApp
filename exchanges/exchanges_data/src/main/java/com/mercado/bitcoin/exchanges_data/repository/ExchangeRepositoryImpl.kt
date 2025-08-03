@@ -2,17 +2,12 @@ package com.mercado.bitcoin.exchanges_data.repository
 
 import com.mercado.bitcoin.core.network.LoadingEvent
 import com.mercado.bitcoin.core.network.flowApiCall
-import com.mercado.bitcoin.core.network.getSuccessDataOrNull
-import com.mercado.bitcoin.core.network.mapSuccess
-import kotlinx.coroutines.flow.Flow
 import com.mercado.bitcoin.exchanges_data.remote.ExchangeDataStore
 import com.mercado.bitcoin.exchanges_domain.model.ExchangeData
 import com.mercado.bitcoin.exchanges_domain.model.ExchangeDetails
 import com.mercado.bitcoin.exchanges_domain.model.exchangeDetailsNotMapped
 import com.mercado.bitcoin.exchanges_domain.repository.ExchangeRepository
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.flow
-import kotlinx.coroutines.flow.flowOn
+import kotlinx.coroutines.flow.Flow
 
 class ExchangeRepositoryImpl(private val dataStore: ExchangeDataStore) :
     ExchangeRepository {

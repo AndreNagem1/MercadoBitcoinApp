@@ -79,6 +79,7 @@ dependencies {
 
 
     implementation(project(":core_ui"))
+    implementation(project(":core"))
     implementation(project(":exchanges:exchanges_data"))
     implementation(project(":exchanges:exchanges_domain"))
     implementation(project(":exchanges:exchanges_presentation"))

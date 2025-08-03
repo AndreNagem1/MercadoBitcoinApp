@@ -1,6 +1,7 @@
 package com.mercado.bitcoin.app
 
 import android.app.Application
+import com.mercado.bitcoin.core.di.coreModule
 import com.mercado.bitcoin.exchanges_data.di.exchangesDataModule
 import com.mercado.bitcoin.exchanges_presentation.di.exchangePresentationModule
 import org.koin.android.ext.koin.androidContext
@@ -15,6 +16,7 @@ class MercadoBitcoinApp : Application(), KoinStartup {
     override fun onKoinStartup() = koinConfiguration {
         androidContext(this@MercadoBitcoinApp)
         modules(
+            coreModule,
             exchangesDataModule,
             exchangePresentationModule
         )
