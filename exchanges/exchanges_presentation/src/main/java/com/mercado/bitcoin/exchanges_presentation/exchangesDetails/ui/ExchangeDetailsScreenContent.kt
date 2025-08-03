@@ -12,19 +12,24 @@ import com.mercado.bitcoin.core.extensions.toDollarCurrency
 import com.mercado.bitcoin.core_ui.composables.BaseScreen
 import com.mercado.bitcoin.exchanges_presentation.R
 import com.mercado.bitcoin.core.network.LoadingEvent
+import com.mercado.bitcoin.core.network.getErrorApiExceptionOrNull
 import com.mercado.bitcoin.core.network.getSuccessDataOrNull
 import com.mercado.bitcoin.core.network.isError
 import com.mercado.bitcoin.core.network.isLoading
 import com.mercado.bitcoin.exchanges_domain.model.ExchangeDetails
+import com.mercado.bitcoin.exchanges_presentation.exchangesDetails.uiLogic.ExchangeDetailsScreenEvent
 
 @Composable
 fun ExchangeDetailsScreenContent(
     state: LoadingEvent<ExchangeDetails>,
+    onEvent: (ExchangeDetailsScreenEvent) -> Unit,
 ) {
     BaseScreen(
         screenTitle = stringResource(R.string.exchange_details_screen_title),
         isLoading = state.isLoading(),
-        isError = state.isError()
+        isError = state.isError(),
+        error = state.getErrorApiExceptionOrNull(),
+        retryInitialCall = { onEvent(ExchangeDetailsScreenEvent.RetryInitialCall) }
     ) {
         state.getSuccessDataOrNull()?.let { data ->
             Column(

@@ -10,6 +10,7 @@ import kotlinx.coroutines.launch
 import com.mercado.bitcoin.core.network.LoadingEvent
 import com.mercado.bitcoin.exchanges_domain.model.ExchangeData
 import com.mercado.bitcoin.exchanges_domain.repository.ExchangeRepository
+import com.mercado.bitcoin.exchanges_presentation.exchangeList.uiLogic.ExchangeListScreenEvent
 
 class ExchangeListScreenViewModel(private val repository: ExchangeRepository) : ViewModel() {
 
@@ -19,6 +20,12 @@ class ExchangeListScreenViewModel(private val repository: ExchangeRepository) : 
     val state = _exchangeList
         .onStart { getExchangeList() }
         .stateIn(viewModelScope, SharingStarted.WhileSubscribed(), LoadingEvent.Loading)
+
+    fun onEvent(event: ExchangeListScreenEvent) {
+        when(event){
+            ExchangeListScreenEvent.RetryInitialCall -> getExchangeList()
+        }
+    }
 
 
     private fun getExchangeList() {

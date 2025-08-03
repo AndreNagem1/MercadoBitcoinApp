@@ -15,5 +15,6 @@ fun ExchangeDetailsScreen(
 
     ExchangeDetailsScreenContent(
         state = state.value,
+        onEvent = viewModel::onEvent
     )
 }

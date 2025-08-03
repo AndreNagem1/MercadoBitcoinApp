@@ -9,28 +9,40 @@ import kotlinx.coroutines.launch
 import com.mercado.bitcoin.core.network.LoadingEvent
 import com.mercado.bitcoin.exchanges_domain.model.ExchangeDetails
 import com.mercado.bitcoin.exchanges_domain.repository.ExchangeRepository
+import com.mercado.bitcoin.exchanges_presentation.exchangesDetails.uiLogic.ExchangeDetailsScreenEvent
 import kotlinx.coroutines.flow.onStart
 
 class ExchangeDetailsScreenViewModel(
     private val repository: ExchangeRepository,
 ) : ViewModel() {
 
-    var exchangeId : String? = null
+    var exchangeId: String? = null
 
     private val _exchangeDetails =
         MutableStateFlow<LoadingEvent<ExchangeDetails>>(LoadingEvent.Loading)
 
     val state = _exchangeDetails
-        .onStart { getExchangeDetails(exchangeID = exchangeId.orEmpty() ) }
+        .onStart { loadExchangeDetails() }
         .stateIn(
             viewModelScope,
             SharingStarted.WhileSubscribed(),
             LoadingEvent.Loading
         )
 
-    private fun getExchangeDetails(exchangeID: String) {
+    fun onEvent(event: ExchangeDetailsScreenEvent) {
+        when (event) {
+            ExchangeDetailsScreenEvent.RetryInitialCall -> {
+                loadExchangeDetails()
+            }
+        }
+    }
+
+    private fun loadExchangeDetails() {
+        val id = exchangeId.orEmpty()
+        if (id.isBlank()) return
+
         viewModelScope.launch {
-            repository.getExchangeDetails(exchangeID = exchangeID).collect {
+            repository.getExchangeDetails(id).collect {
                 _exchangeDetails.value = it
             }
         }

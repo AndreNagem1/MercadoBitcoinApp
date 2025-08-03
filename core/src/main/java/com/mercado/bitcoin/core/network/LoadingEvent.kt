@@ -1,5 +1,6 @@
 package com.mercado.bitcoin.core.network
 
+import com.mercado.bitcoin.core.exceptions.ApiException
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 
@@ -52,3 +53,12 @@ fun <T> LoadingEvent<T>.getErrorThrowableOrNull(): Throwable? {
     }
     return null
 }
+
+fun <T> LoadingEvent<T>.getErrorApiExceptionOrNull(): ApiException? {
+    return if (this is LoadingEvent.Error && this.exception is ApiException) {
+        this.exception
+    } else {
+        null
+    }
+}
+

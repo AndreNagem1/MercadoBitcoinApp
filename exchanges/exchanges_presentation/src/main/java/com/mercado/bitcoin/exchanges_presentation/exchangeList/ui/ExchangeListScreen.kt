@@ -17,6 +17,7 @@ fun ExchangeListScreen(
 
     ExchangeListScreenContent(
         state = state.value,
+        onEvent = viewModel::onEvent,
         onSelectExchange = { navigateToDetailsScreen(it) }
     )
 }
