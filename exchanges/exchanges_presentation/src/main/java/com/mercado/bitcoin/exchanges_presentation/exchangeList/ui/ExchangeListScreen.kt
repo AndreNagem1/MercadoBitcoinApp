@@ -1,23 +1,20 @@
 package com.mercado.bitcoin.exchanges_presentation.exchangeList.ui
 
 import androidx.compose.runtime.Composable
-import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.mercado.bitcoin.core.network.LoadingEvent
+import androidx.paging.compose.collectAsLazyPagingItems
+import com.mercado.bitcoin.exchanges_domain.repository.ExchangeId
 import com.mercado.bitcoin.exchanges_presentation.exchangeList.viewModel.ExchangeListScreenViewModel
 import org.koin.androidx.compose.koinViewModel
 
 @Composable
 fun ExchangeListScreen(
-    navigateToDetailsScreen: (String) -> Unit,
+    navigateToDetailsScreen: (ExchangeId) -> Unit,
     viewModel: ExchangeListScreenViewModel = koinViewModel()
 ) {
-    val state = viewModel.state.collectAsStateWithLifecycle(
-        initialValue = LoadingEvent.Loading
-    )
+    val pagingState = viewModel.pagingData.collectAsLazyPagingItems()
 
     ExchangeListScreenContent(
-        state = state.value,
-        onEvent = viewModel::onEvent,
+        pagingState = pagingState,
         onSelectExchange = { navigateToDetailsScreen(it) }
     )
 }

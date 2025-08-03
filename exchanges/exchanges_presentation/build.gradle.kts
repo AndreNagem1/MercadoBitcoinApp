@@ -70,6 +70,13 @@ dependencies {
     testImplementation(libs.mockk)
     implementation(libs.turbine)
 
+    // Paging
+    implementation(libs.paging.compose)
+    implementation(libs.paging.run.time)
+
+    //Coil
+    implementation(libs.compose.coil)
+
     implementation(project(":exchanges:exchanges_domain"))
     implementation(project(":core_ui"))
     implementation(project(":core"))

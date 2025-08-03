@@ -9,41 +9,59 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import com.mercado.bitcoin.core.network.LoadingEvent
-import com.mercado.bitcoin.core.network.getErrorApiExceptionOrNull
-import com.mercado.bitcoin.core.network.getSuccessDataOrNull
-import com.mercado.bitcoin.core.network.isError
-import com.mercado.bitcoin.core.network.isLoading
+import androidx.paging.compose.LazyPagingItems
 import com.mercado.bitcoin.core_ui.composables.BaseScreen
 import com.mercado.bitcoin.exchanges_domain.model.ExchangeData
+import com.mercado.bitcoin.exchanges_domain.repository.ExchangeId
 import com.mercado.bitcoin.exchanges_presentation.R
-import com.mercado.bitcoin.exchanges_presentation.exchangeList.uiLogic.ExchangeListScreenEvent
+import com.mercado.bitcoin.exchanges_presentation.exchangeList.uiLogic.ExchangeListState
 
 @Composable
 fun ExchangeListScreenContent(
-    state: LoadingEvent<List<ExchangeData>>,
-    onEvent: (ExchangeListScreenEvent) -> Unit,
-    onSelectExchange: (String) -> Unit
+    pagingState: LazyPagingItems<ExchangeData>,
+    onSelectExchange: (ExchangeId) -> Unit
 ) {
     BaseScreen(
         screenTitle = stringResource(R.string.exchange_list_screen_title),
-        isLoading = state.isLoading(),
-        isError = state.isError(),
-        error = state.getErrorApiExceptionOrNull(),
-        retryInitialCall = { onEvent(ExchangeListScreenEvent.RetryInitialCall) }
     ) {
-        state.getSuccessDataOrNull()?.let { exchangeList ->
-            LazyColumn(modifier = Modifier.padding(12.dp)) {
-                items(exchangeList.size) { index ->
-                    val data = exchangeList[index]
-                    Column {
-                        ExchangeCard(data = data) {
-                            onSelectExchange(data.id)
+        LazyColumn(modifier = Modifier.padding(12.dp)) {
+
+            val state = ExchangeListState.getState(pagingState)
+
+            when (state) {
+                ExchangeListState.SUCCESS -> {
+                    items(pagingState.itemCount) { index ->
+                        pagingState[index]?.let { item ->
+                            Column {
+                                ExchangeCard(data = item) {
+                                    onSelectExchange(item.id)
+                                }
+                                Spacer(modifier = Modifier.height(10.dp))
+                            }
                         }
-                        Spacer(modifier = Modifier.height(10.dp))
+                    }
+                }
+
+                ExchangeListState.LOADING -> {
+                    item {
+                        ExchangeListEmptyState()
+                    }
+                }
+
+                ExchangeListState.ERROR -> {
+                    item {
+                        ExchangeListEmptyState()
+                    }
+
+                }
+
+                ExchangeListState.EMPTY_STATE -> {
+                    item {
+                        ExchangeListEmptyState()
                     }
                 }
             }
         }
+
     }
 }

@@ -2,37 +2,17 @@ package com.mercado.bitcoin.exchanges_presentation.exchangeList.viewModel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.SharingStarted
-import kotlinx.coroutines.flow.onStart
-import kotlinx.coroutines.flow.stateIn
-import kotlinx.coroutines.launch
-import com.mercado.bitcoin.core.network.LoadingEvent
+import androidx.paging.PagingData
+import androidx.paging.cachedIn
 import com.mercado.bitcoin.exchanges_domain.model.ExchangeData
-import com.mercado.bitcoin.exchanges_domain.repository.ExchangeRepository
-import com.mercado.bitcoin.exchanges_presentation.exchangeList.uiLogic.ExchangeListScreenEvent
+import com.mercado.bitcoin.exchanges_presentation.exchangeList.paging.ExchangeListFactory
+import kotlinx.coroutines.flow.Flow
 
-class ExchangeListScreenViewModel(private val repository: ExchangeRepository) : ViewModel() {
+class ExchangeListScreenViewModel(
+    pagingSourceFactory: ExchangeListFactory
+) : ViewModel() {
 
-    private val _exchangeList =
-        MutableStateFlow<LoadingEvent<List<ExchangeData>>>(LoadingEvent.Loading)
+    val pagingData: Flow<PagingData<ExchangeData>> =
+        pagingSourceFactory().cachedIn(viewModelScope)
 
-    val state = _exchangeList
-        .onStart { getExchangeList() }
-        .stateIn(viewModelScope, SharingStarted.WhileSubscribed(), LoadingEvent.Loading)
-
-    fun onEvent(event: ExchangeListScreenEvent) {
-        when(event){
-            ExchangeListScreenEvent.RetryInitialCall -> getExchangeList()
-        }
-    }
-
-
-    private fun getExchangeList() {
-        viewModelScope.launch {
-            repository.getExchangeList().collect {
-                _exchangeList.value = it
-            }
-        }
-    }
 }

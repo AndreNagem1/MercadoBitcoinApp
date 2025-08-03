@@ -13,7 +13,7 @@ fun provideRetrofit(): Retrofit {
         .build()
 
     return Retrofit.Builder()
-        .baseUrl("https://rest.coinapi.io/v1/")
+        .baseUrl("https://pro-api.coinmarketcap.com/v1/")
         .client(okHttpClient)
         .addConverterFactory(GsonConverterFactory.create())
         .build()
@@ -22,7 +22,7 @@ fun provideRetrofit(): Retrofit {
 class AuthInterceptor(private val apiKey: String) : Interceptor {
     override fun intercept(chain: Interceptor.Chain): Response {
         val newRequest = chain.request().newBuilder()
-            .addHeader("X-CoinAPI-Key", apiKey)
+            .addHeader("X-CMC_PRO_API_KEY", apiKey)
             .build()
 
         return chain.proceed(newRequest)

@@ -9,6 +9,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.toRoute
 import com.mercado.bitcoin.core_ui.theme.AppTheme
+import com.mercado.bitcoin.exchanges_domain.repository.ExchangeId
 import com.mercado.bitcoin.exchanges_presentation.exchangeList.ui.ExchangeListScreen
 import com.mercado.bitcoin.exchanges_presentation.exchangesDetails.ui.ExchangeDetailsScreen
 import kotlinx.serialization.Serializable
@@ -49,4 +50,4 @@ class MainActivity : ComponentActivity() {
 object ExchangeListScreenDestination
 
 @Serializable
-data class DetailsScreenDestination(val exchangeId: String)
+data class DetailsScreenDestination(val exchangeId: ExchangeId)

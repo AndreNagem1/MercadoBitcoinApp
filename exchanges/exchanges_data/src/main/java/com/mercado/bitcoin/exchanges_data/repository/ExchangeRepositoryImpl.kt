@@ -6,26 +6,25 @@ import com.mercado.bitcoin.exchanges_data.remote.ExchangeDataStore
 import com.mercado.bitcoin.exchanges_domain.model.ExchangeData
 import com.mercado.bitcoin.exchanges_domain.model.ExchangeDetails
 import com.mercado.bitcoin.exchanges_domain.model.exchangeDetailsNotMapped
+import com.mercado.bitcoin.exchanges_domain.repository.ExchangeId
 import com.mercado.bitcoin.exchanges_domain.repository.ExchangeRepository
 import kotlinx.coroutines.flow.Flow
 
 class ExchangeRepositoryImpl(private val dataStore: ExchangeDataStore) :
     ExchangeRepository {
 
-    override fun getExchangeList(): Flow<LoadingEvent<List<ExchangeData>>> {
+    override fun getExchangeList(currentPage: Int): Flow<LoadingEvent<List<ExchangeId>>> {
         return flowApiCall(
-            apiCall = { dataStore.getExchangeList() },
-            transform = { responseList ->
-                val listExchanges = mutableListOf<ExchangeData>()
+            apiCall = {
+                dataStore.getExchangeList(
+                    currentPage = currentPage
+                )
+            },
+            transform = { response ->
+                val listExchanges = mutableListOf<ExchangeId>()
 
-                responseList.forEach { data ->
-                    val exchangeData = ExchangeData(
-                        id = data.exchangeId,
-                        name = data.name,
-                        volumePerDayUsd = data.volume1dayUsd
-                    )
-
-                    listExchanges.add(exchangeData)
+                response.data.forEach { data ->
+                    listExchanges.add(data.id)
                 }
 
                 listExchanges
@@ -33,9 +32,39 @@ class ExchangeRepositoryImpl(private val dataStore: ExchangeDataStore) :
         )
     }
 
+    override fun getExchangesInfoList(idList: List<ExchangeId>): Flow<LoadingEvent<List<ExchangeData>>> {
+        return flowApiCall(
+            apiCall = {
+                dataStore.getExchangesInfoList(
+                    idList = idList.joinToString(separator = ",")
+                )
+            },
+            transform = { response ->
+                val mutableExchangeList = mutableListOf<ExchangeData>()
+
+                idList.forEach { exchangeId ->
+                    val data = response.data[exchangeId]
+
+                    val exchangeInfo = ExchangeData(
+                        id = exchangeId,
+                        name = data?.name,
+                        logo = data?.logo.orEmpty(),
+                        spotVolumeUSD = data?.spotVolumeUsd ?: 0.0,
+                        dateLaunched = data?.dateLaunched.orEmpty()
+                    )
+
+                    mutableExchangeList.add(exchangeInfo)
+
+                }
+
+                mutableExchangeList.toList()
+            }
+        )
+    }
+
     override fun getExchangeDetails(exchangeID: String): Flow<LoadingEvent<ExchangeDetails>> {
         return flowApiCall(
-            apiCall = { dataStore.getExchangeList() },
+            apiCall = { dataStore.getExchangeDetails(exchangeId = exchangeID) },
             transform = { responseDetails ->
                 val details = if (responseDetails.isEmpty()) {
                     exchangeDetailsNotMapped()
