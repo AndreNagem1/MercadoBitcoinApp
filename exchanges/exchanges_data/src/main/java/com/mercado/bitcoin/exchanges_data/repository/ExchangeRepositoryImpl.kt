@@ -1,6 +1,7 @@
 package com.mercado.bitcoin.exchanges_data.repository
 
 import com.mercado.bitcoin.core.network.LoadingEvent
+import com.mercado.bitcoin.core.network.flowApiCall
 import com.mercado.bitcoin.core.network.getSuccessDataOrNull
 import com.mercado.bitcoin.core.network.mapSuccess
 import kotlinx.coroutines.flow.Flow
@@ -17,9 +18,9 @@ class ExchangeRepositoryImpl(private val dataStore: ExchangeDataStore) :
     ExchangeRepository {
 
     override fun getExchangeList(): Flow<LoadingEvent<List<ExchangeData>>> {
-        return flow {
-            emit(LoadingEvent.Loading)
-            dataStore.getExchangeList().getSuccessDataOrNull()?.let { responseList ->
+        return flowApiCall(
+            apiCall = { dataStore.getExchangeList() },
+            transform = { responseList ->
                 val listExchanges = mutableListOf<ExchangeData>()
 
                 responseList.forEach { data ->
@@ -32,35 +33,30 @@ class ExchangeRepositoryImpl(private val dataStore: ExchangeDataStore) :
                     listExchanges.add(exchangeData)
                 }
 
-                emit(LoadingEvent.Success(listExchanges))
-            } ?: run {
-                emit(LoadingEvent.Error(Throwable()))
+                listExchanges
             }
-        }.flowOn(Dispatchers.IO)
-
+        )
     }
 
     override fun getExchangeDetails(exchangeID: String): Flow<LoadingEvent<ExchangeDetails>> {
-        return flow {
-            emit(LoadingEvent.Loading)
-            dataStore.getExchangeDetails(exchangeId = exchangeID).getSuccessDataOrNull()
-                ?.let { data ->
-                    val details = if (data.isEmpty()) {
-                        exchangeDetailsNotMapped()
-                    } else {
-                        ExchangeDetails(
-                            exchangeId = data[0].exchangeId,
-                            name = data[0].name,
-                            rank = data[0].rank,
-                            volume1dayUsd = data[0].volume1dayUsd,
-                            volume1hrsUsd = data[0].volume1hrsUsd,
-                            volume1mthUsd = data[0].volume1mthUsd,
-                            website = data[0].website.orEmpty()
-                        )
-                    }
-
-                    emit(LoadingEvent.Success(details))
+        return flowApiCall(
+            apiCall = { dataStore.getExchangeList() },
+            transform = { responseDetails ->
+                val details = if (responseDetails.isEmpty()) {
+                    exchangeDetailsNotMapped()
+                } else {
+                    ExchangeDetails(
+                        exchangeId = responseDetails[0].exchangeId,
+                        name = responseDetails[0].name,
+                        rank = responseDetails[0].rank,
+                        volume1dayUsd = responseDetails[0].volume1dayUsd,
+                        volume1hrsUsd = responseDetails[0].volume1hrsUsd,
+                        volume1mthUsd = responseDetails[0].volume1mthUsd,
+                        website = responseDetails[0].website.orEmpty()
+                    )
                 }
-        }.flowOn(Dispatchers.IO)
+                details
+            }
+        )
     }
 }
