@@ -1,11 +1,13 @@
 package com.mercado.bitcoin.core.network
 
+import com.mercado.bitcoin.core.exceptions.ApiException
 import retrofit2.Response
+import java.io.IOException
 
 open class BaseDataStore() {
 
     suspend fun <T> safeApiCall(
-        apiCall:  suspend () -> Response<T>
+        apiCall: suspend () -> Response<T>
     ): LoadingEvent<T> {
         return try {
             val response = apiCall()
@@ -13,14 +15,15 @@ open class BaseDataStore() {
             if (response.isSuccessful) {
                 response.body()?.let {
                     LoadingEvent.Success(it)
-                } ?: LoadingEvent.Error(Exception("Response body is null"))
+                } ?: LoadingEvent.Error(ApiException.EmptyBodyException())
             } else {
-                LoadingEvent.Error(
-                    Exception("API error: ${response.code()} ${response.message()}")
-                )
+                LoadingEvent.Error(ApiException.ApiErrorException(response.code(), response.message()))
             }
+        } catch (e: IOException) {
+            LoadingEvent.Error(ApiException.NetworkException(e))
         } catch (e: Exception) {
-            LoadingEvent.Error(Exception("Exception during API call", e))
+            LoadingEvent.Error(ApiException.UnexpectedException(e))
         }
     }
+
 }
