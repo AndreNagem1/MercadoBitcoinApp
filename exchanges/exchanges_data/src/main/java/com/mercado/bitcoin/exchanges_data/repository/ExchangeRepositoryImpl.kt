@@ -42,7 +42,7 @@ class ExchangeRepositoryImpl(private val dataStore: ExchangeDataStore) :
                     volume1dayUsd = data[0].volume1dayUsd,
                     volume1hrsUsd = data[0].volume1hrsUsd,
                     volume1mthUsd = data[0].volume1mthUsd,
-                    website = data[0].website
+                    website = data[0].website.orEmpty()
                 )
             }
         }

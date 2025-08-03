@@ -31,5 +31,5 @@ data class ExchangeListEntityItem(
     @SerializedName("volume_1mth_usd")
     val volume1mthUsd: Double,
     @SerializedName("website")
-    val website: String
+    val website: String?
 )

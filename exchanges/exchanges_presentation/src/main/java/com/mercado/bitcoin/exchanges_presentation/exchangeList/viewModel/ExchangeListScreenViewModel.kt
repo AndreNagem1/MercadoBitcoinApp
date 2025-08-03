@@ -17,8 +17,9 @@ class ExchangeListScreenViewModel(private val repository: ExchangeRepository) : 
         MutableStateFlow<LoadingEvent<List<ExchangeData>>>(LoadingEvent.Loading)
 
     val state = _exchangeList
-        .stateIn(viewModelScope, SharingStarted.WhileSubscribed(), LoadingEvent.Loading)
         .onStart { getExchangeList() }
+        .stateIn(viewModelScope, SharingStarted.WhileSubscribed(), LoadingEvent.Loading)
+
 
     private fun getExchangeList() {
         viewModelScope.launch {

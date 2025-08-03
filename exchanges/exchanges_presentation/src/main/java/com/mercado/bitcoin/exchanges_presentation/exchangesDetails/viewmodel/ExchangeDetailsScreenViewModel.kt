@@ -15,13 +15,13 @@ class ExchangeDetailsScreenViewModel(
     private val repository: ExchangeRepository,
 ) : ViewModel() {
 
-    var exchangeId: String? = null
+    var exchangeId : String? = null
 
     private val _exchangeDetails =
         MutableStateFlow<LoadingEvent<ExchangeDetails>>(LoadingEvent.Loading)
 
     val state = _exchangeDetails
-        .onStart { getExchangeDetails(exchangeID = exchangeId.orEmpty()) }
+        .onStart { getExchangeDetails(exchangeID = exchangeId.orEmpty() ) }
         .stateIn(
             viewModelScope,
             SharingStarted.WhileSubscribed(),
