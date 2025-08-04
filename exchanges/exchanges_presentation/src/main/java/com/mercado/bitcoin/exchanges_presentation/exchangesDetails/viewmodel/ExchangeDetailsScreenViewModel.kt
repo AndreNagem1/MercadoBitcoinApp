@@ -38,7 +38,7 @@ class ExchangeDetailsScreenViewModel(
         }.onStart { observeExchangeDataAndLoadDetails() }
         .stateIn(
             viewModelScope,
-            SharingStarted.WhileSubscribed(),
+            SharingStarted.WhileSubscribed(5000L),
             ExchangeDetailsScreenState()
         )
 

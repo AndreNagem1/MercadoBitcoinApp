@@ -80,4 +80,5 @@ dependencies {
     implementation(project(":exchanges:exchanges_domain"))
     implementation(project(":core_ui"))
     implementation(project(":core"))
+    testImplementation(kotlin("test"))
 }

@@ -6,5 +6,5 @@ import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 
 @RequiresApi(Build.VERSION_CODES.O)
-fun LocalDate.convertToStringUI() =
+fun LocalDate.convertToStringUI(): String =
     this.format(DateTimeFormatter.ofPattern("d/MM/uuuu"))
