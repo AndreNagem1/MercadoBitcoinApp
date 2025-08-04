@@ -19,17 +19,20 @@ class PagingSource(
 
     override suspend fun load(params: LoadParams<Int>): LoadResult<Int, ExchangeData> {
         val position = params.key ?: STARTING_PAGE_INDEX
+        val pageSize = 10
+        val start = (position - 1) * pageSize + 1
+
 
         var loadResult: LoadResult<Int, ExchangeData> =
             LoadResult.Error(Exception())
 
-        useCase(currentPage = position).collect {
+        useCase(currentPage = start).collect {
             loadResult = when (it) {
                 is LoadingEvent.Error -> LoadResult.Error(it.exception)
                 is LoadingEvent.Success -> {
                     LoadResult.Page(
                         data = it.data,
-                        prevKey = if (position == STARTING_PAGE_INDEX) null else -1,
+                        prevKey = if (position == STARTING_PAGE_INDEX) null else position - 1,
                         nextKey = if (it.data.isEmpty()) null else position + 1
                     )
                 }
@@ -37,7 +40,7 @@ class PagingSource(
                 else -> {
                     LoadResult.Page(
                         data = listOf(),
-                        prevKey = if (position == STARTING_PAGE_INDEX) null else -1,
+                        prevKey = if (position == STARTING_PAGE_INDEX) null else position - 1,
                         nextKey = null
                     )
                 }

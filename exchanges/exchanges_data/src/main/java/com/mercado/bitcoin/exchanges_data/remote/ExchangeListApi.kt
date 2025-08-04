@@ -5,7 +5,6 @@ import com.mercado.bitcoin.exchanges_data.entity.ExchangeInfoEntity
 import com.mercado.bitcoin.exchanges_data.entity.ExchangeMapEntity
 import retrofit2.Response
 import retrofit2.http.GET
-import retrofit2.http.Path
 import retrofit2.http.Query
 
 interface ExchangeListApi {
