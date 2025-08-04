@@ -19,7 +19,7 @@ class PagingSource(
 
     override suspend fun load(params: LoadParams<Int>): LoadResult<Int, ExchangeData> {
         val position = params.key ?: STARTING_PAGE_INDEX
-        val pageSize = 10
+        val pageSize = PAGE_SIZE
         val start = (position - 1) * pageSize + 1
 
 
@@ -52,5 +52,6 @@ class PagingSource(
 
     companion object {
         const val STARTING_PAGE_INDEX = 1
+        const val PAGE_SIZE = 10
     }
 }

@@ -2,6 +2,7 @@ package com.mercado.bitcoin.exchanges_presentation.exchangeList.ui
 
 import android.os.Build
 import androidx.annotation.RequiresApi
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.height
@@ -29,13 +30,17 @@ fun ExchangeListScreenContent(
 ) {
     val state = ExchangeListState.getState(pagingState)
 
+
     BaseScreen(
         screenTitle = stringResource(R.string.exchange_list_screen_title),
     ) {
-        LazyColumn(modifier = Modifier.padding(12.dp)) {
+        when (state) {
+            ExchangeListState.SUCCESS -> {
+                LazyColumn(
+                    modifier = Modifier.padding(12.dp),
+                    verticalArrangement = Arrangement.Center
+                ) {
 
-            when (state) {
-                ExchangeListState.SUCCESS -> {
                     items(pagingState.itemCount) { index ->
                         pagingState[index]?.let { item ->
                             Column {
@@ -47,26 +52,22 @@ fun ExchangeListScreenContent(
                         }
                     }
                 }
+            }
 
-                ExchangeListState.LOADING -> {
-                    item{
-                        ExchangeListLoading()
-                    }
-                }
+            ExchangeListState.LOADING -> {
+                ExchangeListLoading()
 
-                ExchangeListState.ERROR -> {
-                    item {
-                        ExchangeListErrorState(
-                            error = ApiException.UnexpectedException(Throwable())
-                        )
-                    }
-                }
+            }
 
-                ExchangeListState.EMPTY_STATE -> {
-                    item {
-                        ExchangeListEmptyState()
-                    }
-                }
+            ExchangeListState.ERROR -> {
+                ExchangeListErrorState(
+                    error = ApiException.UnexpectedException(Throwable())
+                )
+
+            }
+
+            ExchangeListState.EMPTY_STATE -> {
+                ExchangeListEmptyState()
             }
         }
 

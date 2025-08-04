@@ -1,7 +1,6 @@
 package com.mercado.bitcoin.exchanges_presentation.exchangeList.ui
 
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.runtime.Composable
@@ -12,12 +11,11 @@ import androidx.compose.ui.platform.testTag
 
 @Composable
 fun ExchangeListLoading() {
-    Column(
+    Box(
         modifier = Modifier
-            .testTag("LoadingScreen")
-            .fillMaxSize(),
-        verticalArrangement = Arrangement.Center,
-        horizontalAlignment = Alignment.CenterHorizontally
+            .fillMaxSize()
+            .testTag("LoadingScreen"),
+        contentAlignment = Alignment.Center
     ) {
         CircularProgressIndicator(color = Color.Blue)
     }

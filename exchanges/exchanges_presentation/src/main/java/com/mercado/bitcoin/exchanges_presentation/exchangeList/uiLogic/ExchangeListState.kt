@@ -12,28 +12,17 @@ enum class ExchangeListState {
 
     companion object {
         fun getState(state: LazyPagingItems<ExchangeData>): ExchangeListState {
-            if (state.loadState.refresh is LoadState.Error
-                || state.loadState.append is LoadState.Error
-            ) {
-                return ERROR
+            val loadState = state.loadState
+
+            return when {
+                loadState.refresh is LoadState.Loading -> LOADING
+
+                loadState.refresh is LoadState.Error -> ERROR
+
+                state.itemCount == 0 && loadState.refresh is LoadState.NotLoading -> EMPTY_STATE
+
+                else -> SUCCESS
             }
-
-            if (state.itemCount == 0
-                && state.loadState.append != LoadState.Loading
-                && state.loadState.refresh != LoadState.Loading
-            ) {
-                return EMPTY_STATE
-            }
-
-
-            if (state.loadState.append == LoadState.Loading
-                && state.loadState.refresh == LoadState.Loading
-            ) {
-                return LOADING
-            }
-
-
-            return SUCCESS
         }
     }
 }
