@@ -21,6 +21,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import coil.compose.rememberAsyncImagePainter
@@ -78,6 +79,7 @@ fun ExchangeCard(data: ExchangeData, onCardClick: () -> Unit) {
 fun ExchangeCardItem(label: String, value: String) {
     Spacer(modifier = Modifier.height(4.dp))
     Row(
+        modifier = Modifier.testTag("ExchangeCardItem"),
         verticalAlignment = Alignment.CenterVertically
     ) {
         Text(

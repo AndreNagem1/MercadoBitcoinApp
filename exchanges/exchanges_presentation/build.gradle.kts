@@ -77,6 +77,9 @@ dependencies {
     //Coil
     implementation(libs.compose.coil)
 
+    androidTestImplementation("androidx.compose.ui:ui-test-junit4")
+    debugImplementation("androidx.compose.ui:ui-test-manifest")
+
     implementation(project(":exchanges:exchanges_domain"))
     implementation(project(":core_ui"))
     implementation(project(":core"))
