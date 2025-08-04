@@ -6,10 +6,13 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.paging.compose.LazyPagingItems
+import com.mercado.bitcoin.core.exceptions.ApiException
 import com.mercado.bitcoin.core_ui.composables.BaseScreen
 import com.mercado.bitcoin.exchanges_domain.model.ExchangeData
 import com.mercado.bitcoin.exchanges_domain.repository.ExchangeId
@@ -21,6 +24,7 @@ fun ExchangeListScreenContent(
     pagingState: LazyPagingItems<ExchangeData>,
     onSelectExchange: (ExchangeData) -> Unit
 ) {
+
     BaseScreen(
         screenTitle = stringResource(R.string.exchange_list_screen_title),
     ) {
@@ -43,16 +47,17 @@ fun ExchangeListScreenContent(
                 }
 
                 ExchangeListState.LOADING -> {
-                    item {
-                        ExchangeListEmptyState()
+                    item{
+                        ExchangeListLoading()
                     }
                 }
 
                 ExchangeListState.ERROR -> {
                     item {
-                        ExchangeListEmptyState()
+                        ExchangeListErrorState(
+                            error = ApiException.UnexpectedException(Throwable())
+                        )
                     }
-
                 }
 
                 ExchangeListState.EMPTY_STATE -> {
