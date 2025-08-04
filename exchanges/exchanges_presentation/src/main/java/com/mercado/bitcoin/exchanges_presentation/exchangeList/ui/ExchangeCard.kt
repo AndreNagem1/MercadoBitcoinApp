@@ -1,5 +1,7 @@
 package com.mercado.bitcoin.exchanges_presentation.exchangeList.ui
 
+import android.os.Build
+import androidx.annotation.RequiresApi
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
@@ -22,11 +24,13 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import coil.compose.rememberAsyncImagePainter
+import com.mercado.bitcoin.core.extensions.convertToStringUI
 import com.mercado.bitcoin.core.extensions.toDollarCurrency
 import com.mercado.bitcoin.core_ui.theme.AppTheme
 import com.mercado.bitcoin.exchanges_domain.model.ExchangeData
 import com.mercado.bitcoin.exchanges_presentation.R
 
+@RequiresApi(Build.VERSION_CODES.O)
 @Composable
 fun ExchangeCard(data: ExchangeData, onCardClick: () -> Unit) {
     Card(
@@ -62,8 +66,8 @@ fun ExchangeCard(data: ExchangeData, onCardClick: () -> Unit) {
             )
 
             ExchangeCardItem(
-                label = stringResource(R.string.exchange_date_launched),
-                value = data.dateLaunched
+                label = stringResource(R.string.exchange_date_launched_label),
+                value = data.dateLaunched?.convertToStringUI() ?: stringResource(R.string.exchange_not_informed)
             )
 
         }

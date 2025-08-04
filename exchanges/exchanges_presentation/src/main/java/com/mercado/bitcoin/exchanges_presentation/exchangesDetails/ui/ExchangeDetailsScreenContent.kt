@@ -1,6 +1,7 @@
 package com.mercado.bitcoin.exchanges_presentation.exchangesDetails.ui
 
-import android.speech.ModelDownloadListener
+import android.os.Build
+import androidx.annotation.RequiresApi
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -10,10 +11,11 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import com.mercado.bitcoin.core.extensions.convertToStringUI
+import com.mercado.bitcoin.core.extensions.getShortDescription
 import com.mercado.bitcoin.core.extensions.toDollarCurrency
 import com.mercado.bitcoin.core.network.getErrorApiExceptionOrNull
 import com.mercado.bitcoin.core.network.getSuccessDataOrNull
@@ -27,6 +29,7 @@ import com.mercado.bitcoin.exchanges_presentation.exchangeList.ui.ExchangeLogoIm
 import com.mercado.bitcoin.exchanges_presentation.exchangesDetails.uiLogic.ExchangeDetailsScreenEvent
 import com.mercado.bitcoin.exchanges_presentation.exchangesDetails.uiLogic.ExchangeDetailsScreenState
 
+@RequiresApi(Build.VERSION_CODES.O)
 @Composable
 fun ExchangeDetailsScreenContent(
     state: ExchangeDetailsScreenState,
@@ -60,31 +63,36 @@ fun ExchangeDetailsScreenContent(
                         value = data?.name ?: stringResource(R.string.exchange_no_name)
                     )
                     ExchangeCardItem(
-                        label = stringResource(R.string.exchange_name_label),
+                        label = stringResource(R.string.exchange_id_label),
                         value = data?.id.toString()
                     )
                     ExchangeCardItem(
-                        label = stringResource(R.string.exchange_name_label),
-                        value = data?.description?.substring(0, 100)
+                        label = stringResource(R.string.exchange_description_label),
+                        value = data?.description?.getShortDescription()
                             ?: stringResource(R.string.exchange_no_description)
                     )
                     ExchangeCardItem(
-                        label = stringResource(R.string.exchange_name_label),
+                        label = stringResource(R.string.exchange_website_label),
                         value = data?.website ?: stringResource(R.string.exchange_not_informed)
                     )
                     ExchangeCardItem(
-                        label = stringResource(R.string.exchange_name_label),
+                        label = stringResource(R.string.exchange_spot_volume_label),
                         value = data?.spotVolumeUSD?.toDollarCurrency()
                             ?: stringResource(R.string.exchange_not_informed)
                     )
                     ExchangeCardItem(
-                        label = stringResource(R.string.exchange_name_label),
+                        label = stringResource(R.string.exchange_maker_fee_label),
                         value = data?.makeFee?.toDollarCurrency()
                             ?: stringResource(R.string.exchange_not_informed)
                     )
                     ExchangeCardItem(
-                        label = stringResource(R.string.exchange_name_label),
+                        label = stringResource(R.string.exchange_taker_fee_label),
                         value = data?.takerFee?.toDollarCurrency()
+                            ?: stringResource(R.string.exchange_not_informed)
+                    )
+                    ExchangeCardItem(
+                        label = stringResource(R.string.exchange_date_launched_label),
+                        value = data?.dateLaunched?.convertToStringUI()
                             ?: stringResource(R.string.exchange_not_informed)
                     )
 

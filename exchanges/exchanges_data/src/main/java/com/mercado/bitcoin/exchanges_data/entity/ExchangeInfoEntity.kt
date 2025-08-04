@@ -3,6 +3,7 @@ package com.mercado.bitcoin.exchanges_data.entity
 
 import com.google.gson.annotations.SerializedName
 import com.mercado.bitcoin.exchanges_domain.repository.ExchangeId
+import kotlinx.serialization.Serializable
 
 data class ExchangeInfoEntity(
     @SerializedName("data")

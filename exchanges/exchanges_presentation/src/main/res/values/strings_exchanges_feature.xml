@@ -12,6 +12,12 @@
     <string name="exchange_not_informed">Não informado</string>
     <string name="exchange_id_label">Exchange ID:</string>
     <string name="exchange_name_label">Name:</string>
+    <string name="exchange_description_label">Description:</string>
+    <string name="exchange_website_label">WebSite:</string>
+    <string name="exchange_spot_volume_label">Spot volume (USD):</string>
+    <string name="exchange_maker_fee_label">Maker Fee (USD):</string>
+    <string name="exchange_taker_fee_label">Taker Fee (USD):</string>
+    <string name="exchange_date_launched_label">Launch date:</string>
     <string name="exchange_volume_label">Spot volume (USD):</string>
-    <string name="exchange_date_launched">Launch date:</string>
+
 </resources>

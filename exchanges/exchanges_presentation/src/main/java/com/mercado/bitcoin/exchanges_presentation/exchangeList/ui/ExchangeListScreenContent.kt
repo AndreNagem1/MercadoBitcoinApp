@@ -1,5 +1,7 @@
 package com.mercado.bitcoin.exchanges_presentation.exchangeList.ui
 
+import android.os.Build
+import androidx.annotation.RequiresApi
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.height
@@ -19,18 +21,18 @@ import com.mercado.bitcoin.exchanges_domain.repository.ExchangeId
 import com.mercado.bitcoin.exchanges_presentation.R
 import com.mercado.bitcoin.exchanges_presentation.exchangeList.uiLogic.ExchangeListState
 
+@RequiresApi(Build.VERSION_CODES.O)
 @Composable
 fun ExchangeListScreenContent(
     pagingState: LazyPagingItems<ExchangeData>,
     onSelectExchange: (ExchangeData) -> Unit
 ) {
+    val state = ExchangeListState.getState(pagingState)
 
     BaseScreen(
         screenTitle = stringResource(R.string.exchange_list_screen_title),
     ) {
         LazyColumn(modifier = Modifier.padding(12.dp)) {
-
-            val state = ExchangeListState.getState(pagingState)
 
             when (state) {
                 ExchangeListState.SUCCESS -> {

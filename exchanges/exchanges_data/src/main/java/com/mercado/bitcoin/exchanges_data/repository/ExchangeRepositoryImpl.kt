@@ -1,5 +1,8 @@
 package com.mercado.bitcoin.exchanges_data.repository
 
+import android.os.Build
+import androidx.annotation.RequiresApi
+import com.mercado.bitcoin.core.extensions.convertToLocalDate
 import com.mercado.bitcoin.core.network.LoadingEvent
 import com.mercado.bitcoin.core.network.flowApiCall
 import com.mercado.bitcoin.exchanges_data.remote.ExchangeDataStore
@@ -31,6 +34,7 @@ class ExchangeRepositoryImpl(private val dataStore: ExchangeDataStore) :
         )
     }
 
+    @RequiresApi(Build.VERSION_CODES.O)
     override fun getExchangesInfoList(idList: List<ExchangeId>): Flow<LoadingEvent<List<ExchangeData>>> {
         return flowApiCall(
             apiCall = {
@@ -49,13 +53,12 @@ class ExchangeRepositoryImpl(private val dataStore: ExchangeDataStore) :
                         name = data?.name,
                         logo = data?.logo.orEmpty(),
                         spotVolumeUSD = data?.spotVolumeUsd ?: 0.0,
-                        dateLaunched = data?.dateLaunched.orEmpty(),
+                        dateLaunched = data?.dateLaunched?.convertToLocalDate(),
                         description = data?.description.orEmpty(),
                         makeFee = data?.makerFee,
                         takerFee = data?.takerFee,
                         website = data?.urls?.website?.firstOrNull(),
-
-                        )
+                    )
 
                     mutableExchangeList.add(exchangeInfo)
 

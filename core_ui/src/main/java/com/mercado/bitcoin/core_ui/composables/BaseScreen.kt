@@ -35,8 +35,9 @@ fun BaseScreen(
                 .weight(1f)
                 .fillMaxWidth()
         ) {
-            content()
-
+            if (isError.not()) {
+                content()
+            }
             if (isLoading) {
                 Column(
                     modifier = Modifier
