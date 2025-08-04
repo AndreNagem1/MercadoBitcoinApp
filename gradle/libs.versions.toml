@@ -42,6 +42,7 @@ androidx-material3 = { group = "androidx.compose.material3", name = "material3" 
 # Navigation
 navigation-compose = { module = "androidx.navigation:navigation-compose", version.ref = "composeNavigation" }
 kotlinx-serialization-json = { module = "org.jetbrains.kotlinx:kotlinx-serialization-json", version.ref = "serialization" }
+androidx-navigation-ktx ={ module = "androidx.navigation:navigation-runtime-ktx", version.ref = "composeNavigation" }
 
 # Retrofit
 retrofit_lib = { module = "com.squareup.retrofit2:retrofit", version.ref = "retrofit_version" }

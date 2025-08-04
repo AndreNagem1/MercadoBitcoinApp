@@ -9,7 +9,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.toRoute
 import com.mercado.bitcoin.core_ui.theme.AppTheme
-import com.mercado.bitcoin.exchanges_domain.repository.ExchangeId
+import com.mercado.bitcoin.exchanges_domain.model.ExchangeData
 import com.mercado.bitcoin.exchanges_presentation.exchangeList.ui.ExchangeListScreen
 import com.mercado.bitcoin.exchanges_presentation.exchangesDetails.ui.ExchangeDetailsScreen
 import kotlinx.serialization.Serializable
@@ -29,16 +29,12 @@ class MainActivity : ComponentActivity() {
                     composable<ExchangeListScreenDestination> {
                         ExchangeListScreen(
                             navigateToDetailsScreen = {
-                                navController.navigate(DetailsScreenDestination(exchangeId = it))
+                                navController.navigate(DetailsScreenDestination)
                             }
                         )
                     }
                     composable<DetailsScreenDestination> {
-                        val args = it.toRoute<DetailsScreenDestination>()
-
-                        ExchangeDetailsScreen(
-                            exchangeId = args.exchangeId
-                        )
+                        ExchangeDetailsScreen()
                     }
                 }
             }
@@ -50,4 +46,4 @@ class MainActivity : ComponentActivity() {
 object ExchangeListScreenDestination
 
 @Serializable
-data class DetailsScreenDestination(val exchangeId: ExchangeId)
+object DetailsScreenDestination

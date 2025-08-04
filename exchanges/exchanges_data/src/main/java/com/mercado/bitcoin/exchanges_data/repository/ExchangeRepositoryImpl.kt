@@ -3,9 +3,8 @@ package com.mercado.bitcoin.exchanges_data.repository
 import com.mercado.bitcoin.core.network.LoadingEvent
 import com.mercado.bitcoin.core.network.flowApiCall
 import com.mercado.bitcoin.exchanges_data.remote.ExchangeDataStore
+import com.mercado.bitcoin.exchanges_domain.model.CurrencyInfo
 import com.mercado.bitcoin.exchanges_domain.model.ExchangeData
-import com.mercado.bitcoin.exchanges_domain.model.ExchangeDetails
-import com.mercado.bitcoin.exchanges_domain.model.exchangeDetailsNotMapped
 import com.mercado.bitcoin.exchanges_domain.repository.ExchangeId
 import com.mercado.bitcoin.exchanges_domain.repository.ExchangeRepository
 import kotlinx.coroutines.flow.Flow
@@ -50,8 +49,13 @@ class ExchangeRepositoryImpl(private val dataStore: ExchangeDataStore) :
                         name = data?.name,
                         logo = data?.logo.orEmpty(),
                         spotVolumeUSD = data?.spotVolumeUsd ?: 0.0,
-                        dateLaunched = data?.dateLaunched.orEmpty()
-                    )
+                        dateLaunched = data?.dateLaunched.orEmpty(),
+                        description = data?.description.orEmpty(),
+                        makeFee = data?.makerFee,
+                        takerFee = data?.takerFee,
+                        website = data?.urls?.website?.firstOrNull(),
+
+                        )
 
                     mutableExchangeList.add(exchangeInfo)
 
@@ -62,24 +66,21 @@ class ExchangeRepositoryImpl(private val dataStore: ExchangeDataStore) :
         )
     }
 
-    override fun getExchangeDetails(exchangeID: String): Flow<LoadingEvent<ExchangeDetails>> {
+    override fun getExchangeDetails(exchangeID: String): Flow<LoadingEvent<List<CurrencyInfo>>> {
         return flowApiCall(
             apiCall = { dataStore.getExchangeDetails(exchangeId = exchangeID) },
             transform = { responseDetails ->
-                val details = if (responseDetails.isEmpty()) {
-                    exchangeDetailsNotMapped()
-                } else {
-                    ExchangeDetails(
-                        exchangeId = responseDetails[0].exchangeId,
-                        name = responseDetails[0].name,
-                        rank = responseDetails[0].rank,
-                        volume1dayUsd = responseDetails[0].volume1dayUsd,
-                        volume1hrsUsd = responseDetails[0].volume1hrsUsd,
-                        volume1mthUsd = responseDetails[0].volume1mthUsd,
-                        website = responseDetails[0].website.orEmpty()
+                val currencyList = mutableListOf<CurrencyInfo>()
+
+                responseDetails.data.forEach {
+                    val currencyInfo = CurrencyInfo(
+                        name = it.currency.name,
+                        priceUSD = it.currency.priceUsd
                     )
+                    currencyList.add(currencyInfo)
                 }
-                details
+
+                currencyList
             }
         )
     }

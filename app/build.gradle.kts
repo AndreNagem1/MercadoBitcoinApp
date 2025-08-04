@@ -77,6 +77,7 @@ dependencies {
 
     implementation(libs.koin.startup)
 
+    implementation(libs.androidx.navigation.ktx)
 
     implementation(project(":core_ui"))
     implementation(project(":core"))

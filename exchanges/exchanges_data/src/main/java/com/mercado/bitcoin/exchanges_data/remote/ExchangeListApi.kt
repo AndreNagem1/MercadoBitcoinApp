@@ -1,7 +1,7 @@
 package com.mercado.bitcoin.exchanges_data.remote
 
+import com.mercado.bitcoin.exchanges_data.entity.ExchangeDetailsEntity
 import com.mercado.bitcoin.exchanges_data.entity.ExchangeInfoEntity
-import com.mercado.bitcoin.exchanges_data.entity.ExchangeListEntityItem
 import com.mercado.bitcoin.exchanges_data.entity.ExchangeMapEntity
 import retrofit2.Response
 import retrofit2.http.GET
@@ -21,9 +21,9 @@ interface ExchangeListApi {
         @Query("id") idList: String,
     ): Response<ExchangeInfoEntity>
 
-    @GET("exchanges/{exchange_id}")
+    @GET("exchange/assets")
     suspend fun getExchangeDetails(
-        @Path("exchange_id") exchangeId: String,
-    ):  Response<List<ExchangeListEntityItem>>
+        @Query("id") exchangeId: String,
+    ):  Response<ExchangeDetailsEntity>
 
 }

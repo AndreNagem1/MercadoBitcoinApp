@@ -1,9 +1,8 @@
 plugins {
     alias(libs.plugins.android.library)
     alias(libs.plugins.kotlin.android)
+    alias(libs.plugins.kotlin.serialization)
 }
-
-
 
 android {
     namespace = "com.mercado.bitcoin.exchanges_data"
@@ -49,6 +48,8 @@ dependencies {
 
     implementation(libs.koin.android)
     implementation(libs.koin.compose)
+
+    implementation(libs.androidx.navigation.ktx)
 
     implementation(project(":core"))
     implementation(project(":exchanges:exchanges_domain"))

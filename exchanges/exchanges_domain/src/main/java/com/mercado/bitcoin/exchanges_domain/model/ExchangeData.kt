@@ -1,11 +1,16 @@
 package com.mercado.bitcoin.exchanges_domain.model
 
-import com.mercado.bitcoin.exchanges_domain.repository.ExchangeId
+import kotlinx.serialization.Serializable
 
+@Serializable
 data class ExchangeData(
-    val id: ExchangeId,
+    val id: Int,
     val name: String?,
+    val description: String,
     val logo: String,
     val spotVolumeUSD: Double,
-    val dateLaunched: String
+    val dateLaunched: String,
+    val makeFee: Double? = null,
+    val takerFee: Double? = null,
+    val website: String? = null,
 )

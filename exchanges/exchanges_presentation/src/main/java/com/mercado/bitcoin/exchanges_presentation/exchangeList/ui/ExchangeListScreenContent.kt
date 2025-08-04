@@ -19,7 +19,7 @@ import com.mercado.bitcoin.exchanges_presentation.exchangeList.uiLogic.ExchangeL
 @Composable
 fun ExchangeListScreenContent(
     pagingState: LazyPagingItems<ExchangeData>,
-    onSelectExchange: (ExchangeId) -> Unit
+    onSelectExchange: (ExchangeData) -> Unit
 ) {
     BaseScreen(
         screenTitle = stringResource(R.string.exchange_list_screen_title),
@@ -34,7 +34,7 @@ fun ExchangeListScreenContent(
                         pagingState[index]?.let { item ->
                             Column {
                                 ExchangeCard(data = item) {
-                                    onSelectExchange(item.id)
+                                    onSelectExchange(item)
                                 }
                                 Spacer(modifier = Modifier.height(10.dp))
                             }
