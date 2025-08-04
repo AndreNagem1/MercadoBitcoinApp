@@ -30,9 +30,11 @@ fun ExchangeListScreenContent(
 ) {
     val state = ExchangeListState.getState(pagingState)
 
-
     BaseScreen(
         screenTitle = stringResource(R.string.exchange_list_screen_title),
+        isLoading = state == ExchangeListState.LOADING,
+        isError = state == ExchangeListState.ERROR,
+        error = ApiException.UnexpectedException(Throwable())
     ) {
         when (state) {
             ExchangeListState.SUCCESS -> {
@@ -54,21 +56,11 @@ fun ExchangeListScreenContent(
                 }
             }
 
-            ExchangeListState.LOADING -> {
-                ExchangeListLoading()
-
-            }
-
-            ExchangeListState.ERROR -> {
-                ExchangeListErrorState(
-                    error = ApiException.UnexpectedException(Throwable())
-                )
-
-            }
-
             ExchangeListState.EMPTY_STATE -> {
                 ExchangeListEmptyState()
             }
+
+            else -> {}
         }
 
     }
