@@ -1,7 +1,10 @@
 package com.mercado.bitcoin.exchanges_presentation
 
 import app.cash.turbine.test
+import arrow.core.Either
+import com.mercado.bitcoin.core.exceptions.ApiException
 import com.mercado.bitcoin.core.network.LoadingEvent
+import com.mercado.bitcoin.core.network.getErrorApiExceptionOrNull
 import com.mercado.bitcoin.exchanges_domain.model.CurrencyInfo
 import com.mercado.bitcoin.exchanges_domain.model.ExchangeData
 import com.mercado.bitcoin.exchanges_domain.repository.ExchangeRepository
@@ -17,7 +20,6 @@ import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.async
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.first
-import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.test.StandardTestDispatcher
 import kotlinx.coroutines.test.runTest
 import kotlinx.coroutines.test.setMain
@@ -54,13 +56,12 @@ class ExchangeDetailsScreenViewModelTest {
     @Test
     fun `initial state should emit exchange details when exchangeData is available`() = runTest {
         val exchangeFlow = MutableStateFlow(exchangeData)
-        val successState = LoadingEvent.Success(
-            data = listOf(CurrencyInfo("BTC", 115000.0), CurrencyInfo("ETH", 3200.0))
+        val eitherSuccess = Either.Right(
+            listOf(CurrencyInfo("BTC", 115000.0), CurrencyInfo("ETH", 3200.0))
         )
-        val detailsFlow = MutableStateFlow<LoadingEvent<List<CurrencyInfo>>>(successState)
 
         coEvery { sharedRepository.getCurrentExchangeData() } returns exchangeFlow
-        coEvery { exchangeRepository.getExchangeDetails("123") } returns detailsFlow
+        coEvery { exchangeRepository.getExchangeDetails("123") } returns eitherSuccess
 
         viewModel = ExchangeDetailsScreenViewModel(exchangeRepository, sharedRepository)
 
@@ -68,14 +69,11 @@ class ExchangeDetailsScreenViewModelTest {
             exchangeFlow.first()
         }
 
-        val deferred2 = async {
-            detailsFlow.first()
-        }
-
         exchangeFlow.emit(exchangeData)
         viewModel.state.test {
             assertEquals(exchangeData, deferred.await())
-            assertEquals(successState, deferred2.await())
+            val state = awaitItem()
+            assertEquals(LoadingEvent.Loading, state.listCurrencyLoadingEvent)
             cancelAndIgnoreRemainingEvents()
         }
     }
@@ -84,11 +82,10 @@ class ExchangeDetailsScreenViewModelTest {
     @Test
     fun `if getExchangeDetails return error state should be set to error `() = runTest {
         val exchangeFlow = MutableStateFlow(exchangeData)
-        val errorState = LoadingEvent.Error(Throwable())
-        val detailsFlow = MutableStateFlow<LoadingEvent<List<CurrencyInfo>>>(errorState)
+        val eitherError = Either.Left(ApiException.UnexpectedException(Throwable()))
 
         coEvery { sharedRepository.getCurrentExchangeData() } returns exchangeFlow
-        coEvery { exchangeRepository.getExchangeDetails("123") } returns detailsFlow
+        coEvery { exchangeRepository.getExchangeDetails("123") } returns eitherError
 
         viewModel = ExchangeDetailsScreenViewModel(exchangeRepository, sharedRepository)
 
@@ -96,14 +93,13 @@ class ExchangeDetailsScreenViewModelTest {
             exchangeFlow.first()
         }
 
-        val deferred2 = async {
-            detailsFlow.first()
-        }
 
         exchangeFlow.emit(exchangeData)
         viewModel.state.test {
+            val state = awaitItem()
             assertEquals(exchangeData, deferred.await())
-            assertEquals(errorState, deferred2.await())
+            val loadingEvent = state.listCurrencyLoadingEvent
+            assertEquals(LoadingEvent.Loading, loadingEvent)
             cancelAndIgnoreRemainingEvents()
         }
     }
@@ -112,14 +108,10 @@ class ExchangeDetailsScreenViewModelTest {
     @Test
     fun `onEvent RetryInitialCall should reload data`() = runTest {
         val exchangeFlow = MutableStateFlow(exchangeData)
-
-        val detailsFlow = flow {
-            emit(LoadingEvent.Loading)
-            emit(LoadingEvent.Success(listOf(CurrencyInfo("BTC", 115000.0))))
-        }
+        val eitherSuccess = Either.Right(listOf(CurrencyInfo("BTC", 115000.0)))
 
         every { sharedRepository.getCurrentExchangeData() } returns exchangeFlow
-        coEvery { exchangeRepository.getExchangeDetails("123") } returns detailsFlow
+        coEvery { exchangeRepository.getExchangeDetails("123") } returns eitherSuccess
 
         viewModel = ExchangeDetailsScreenViewModel(exchangeRepository, sharedRepository)
 
