@@ -32,7 +32,7 @@ CoinTrack is an Android app that allows users to browse cryptocurrency market da
 
 1. Clone the repo:
    ```bash
-   git clone https://github.com/your-username/cointrack.git
+   git clone https://github.com/your-username/cointrack.git](https://github.com/AndreNagem1/MercadoBitcoinApp)
 
 ## ✅ Testing
 
