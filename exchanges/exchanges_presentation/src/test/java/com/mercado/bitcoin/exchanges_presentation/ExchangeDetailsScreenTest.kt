@@ -71,9 +71,13 @@ class ExchangeDetailsScreenViewModelTest {
 
         exchangeFlow.emit(exchangeData)
         viewModel.state.test {
+            skipItems(1)
+
             assertEquals(exchangeData, deferred.await())
-            val state = awaitItem()
-            assertEquals(LoadingEvent.Loading, state.listCurrencyLoadingEvent)
+            val loading = awaitItem()
+            assertEquals(LoadingEvent.Loading, loading.listCurrencyLoadingEvent)
+            val success = awaitItem()
+            assertEquals(LoadingEvent.Success(eitherSuccess.value), success.listCurrencyLoadingEvent)
             cancelAndIgnoreRemainingEvents()
         }
     }
@@ -96,10 +100,14 @@ class ExchangeDetailsScreenViewModelTest {
 
         exchangeFlow.emit(exchangeData)
         viewModel.state.test {
+            skipItems(1)
+
             val state = awaitItem()
             assertEquals(exchangeData, deferred.await())
             val loadingEvent = state.listCurrencyLoadingEvent
             assertEquals(LoadingEvent.Loading, loadingEvent)
+            val error = awaitItem()
+            assertEquals(LoadingEvent.Error(eitherError.value), error.listCurrencyLoadingEvent)
             cancelAndIgnoreRemainingEvents()
         }
     }

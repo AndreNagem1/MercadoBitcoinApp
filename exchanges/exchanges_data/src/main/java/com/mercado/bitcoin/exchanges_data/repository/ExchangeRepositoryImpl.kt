@@ -5,14 +5,11 @@ import androidx.annotation.RequiresApi
 import arrow.core.Either
 import com.mercado.bitcoin.core.exceptions.ApiException
 import com.mercado.bitcoin.core.extensions.convertToLocalDate
-import com.mercado.bitcoin.core.network.LoadingEvent
-import com.mercado.bitcoin.core.network.flowApiCall
 import com.mercado.bitcoin.exchanges_data.remote.ExchangeDataStore
 import com.mercado.bitcoin.exchanges_domain.model.CurrencyInfo
 import com.mercado.bitcoin.exchanges_domain.model.ExchangeData
 import com.mercado.bitcoin.exchanges_domain.repository.ExchangeId
 import com.mercado.bitcoin.exchanges_domain.repository.ExchangeRepository
-import kotlinx.coroutines.flow.Flow
 
 class ExchangeRepositoryImpl(private val dataStore: ExchangeDataStore) :
     ExchangeRepository {
