@@ -50,6 +50,7 @@ dependencies {
     implementation(libs.koin.compose)
 
     implementation(libs.androidx.navigation.ktx)
+    implementation("io.arrow-kt:arrow-core:2.1.2")
 
     implementation(project(":core"))
     implementation(project(":exchanges:exchanges_domain"))

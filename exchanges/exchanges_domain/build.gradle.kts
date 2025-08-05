@@ -44,6 +44,8 @@ dependencies {
 
     implementation(libs.koin.android)
     implementation(libs.koin.compose)
+    implementation("io.arrow-kt:arrow-core:2.1.2")
+
 
     implementation(project(":core"))
 }

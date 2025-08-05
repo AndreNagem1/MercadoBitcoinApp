@@ -1,16 +1,16 @@
 package com.mercado.bitcoin.exchanges_domain.repository
 
-import com.mercado.bitcoin.core.network.LoadingEvent
+import arrow.core.Either
+import com.mercado.bitcoin.core.exceptions.ApiException
 import com.mercado.bitcoin.exchanges_domain.model.CurrencyInfo
 import com.mercado.bitcoin.exchanges_domain.model.ExchangeData
-import kotlinx.coroutines.flow.Flow
 
 typealias ExchangeId = Int
 
 interface ExchangeRepository {
-    fun getExchangeList(currentPage: Int): Flow<LoadingEvent<List<ExchangeId>>>
+    suspend fun getExchangeList(currentPage: Int): Either<ApiException, List<ExchangeId>>
 
-    fun getExchangesInfoList(idList : List<ExchangeId>) :Flow<LoadingEvent<List<ExchangeData>>>
+    suspend fun getExchangesInfoList(idList : List<ExchangeId>) :Either<ApiException,List<ExchangeData>>
 
-    fun getExchangeDetails(exchangeID : String): Flow<LoadingEvent<List<CurrencyInfo>>>
+    suspend fun getExchangeDetails(exchangeID : String): Either<ApiException, List<CurrencyInfo>>
 }

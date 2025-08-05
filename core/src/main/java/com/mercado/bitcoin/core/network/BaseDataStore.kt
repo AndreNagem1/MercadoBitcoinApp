@@ -3,27 +3,30 @@ package com.mercado.bitcoin.core.network
 import com.mercado.bitcoin.core.exceptions.ApiException
 import retrofit2.Response
 import java.io.IOException
+import arrow.core.Either
+import arrow.core.left
+import arrow.core.right
 
 open class BaseDataStore() {
 
     suspend fun <T> safeApiCall(
         apiCall: suspend () -> Response<T>
-    ): LoadingEvent<T> {
+    ): Either<ApiException, T> {
         return try {
             val response = apiCall()
 
             if (response.isSuccessful) {
-                response.body()?.let {
-                    LoadingEvent.Success(it)
-                } ?: LoadingEvent.Error(ApiException.EmptyBodyException())
+                response.body()?.right()
+                    ?: ApiException.EmptyBodyException().left()
             } else {
-                LoadingEvent.Error(ApiException.ApiErrorException(response.code(), response.message()))
+                ApiException.ApiErrorException(response.code(), response.message()).left()
             }
         } catch (e: IOException) {
-            LoadingEvent.Error(ApiException.NetworkException(e))
+            ApiException.NetworkException(e).left()
         } catch (e: Exception) {
-            LoadingEvent.Error(ApiException.UnexpectedException(e))
+            ApiException.UnexpectedException(e).left()
         }
     }
+
 
 }

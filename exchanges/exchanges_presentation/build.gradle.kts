@@ -79,6 +79,7 @@ dependencies {
 
     androidTestImplementation("androidx.compose.ui:ui-test-junit4")
     debugImplementation("androidx.compose.ui:ui-test-manifest")
+    implementation("io.arrow-kt:arrow-core:2.1.2")
 
     implementation(project(":exchanges:exchanges_domain"))
     implementation(project(":core_ui"))

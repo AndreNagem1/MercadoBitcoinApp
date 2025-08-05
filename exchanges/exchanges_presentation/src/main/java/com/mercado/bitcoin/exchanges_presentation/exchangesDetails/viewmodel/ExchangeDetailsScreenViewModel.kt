@@ -2,6 +2,7 @@ package com.mercado.bitcoin.exchanges_presentation.exchangesDetails.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import arrow.core.Either
 import com.mercado.bitcoin.core.network.LoadingEvent
 import com.mercado.bitcoin.exchanges_domain.model.CurrencyInfo
 import com.mercado.bitcoin.exchanges_domain.repository.ExchangeRepository
@@ -66,8 +67,9 @@ class ExchangeDetailsScreenViewModel(
         if (exchangeId.isBlank()) return
 
         viewModelScope.launch {
-            repository.getExchangeDetails(exchangeId).collect {
-                _exchangeDetails.value = it
+            when (val result = repository.getExchangeDetails(exchangeId)) {
+                is Either.Left -> _exchangeDetails.value = LoadingEvent.Error(result.value)
+                is Either.Right -> _exchangeDetails.value = LoadingEvent.Success(result.value)
             }
         }
     }
