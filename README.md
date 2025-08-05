@@ -23,8 +23,7 @@ CoinTrack is an Android app that allows users to browse cryptocurrency market da
 | Networking   | Retrofit, OkHttp                     |
 | UI           | Jetpack Compose                      |
 | Async        | Kotlin Coroutines, Flow              |
-| Storage      | EncryptedSharedPreferences (optional for API key) |
-| DI (optional)| Hilt / Koin                          |
+| DI           |  Koin                                |
 
 ---
 
